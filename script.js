@@ -1,11 +1,11 @@
 // --- Card List for SPYCY (105 Cards) ---
 const cards = [
     // IMPORTANT: Paste your entire 105-card list here.
-    "Lakukan dab setiap kali giliranmu, sampai kartu dare lain muncul. Jika lupa, minum 2x.",
+    "Lakukan dab setiap kali giliranmu, sampai kartu dare lain muncul. Jika lupa, **minum 2x**.",
     "Telepon teman secara acak dan nyanyikan lagu ulang tahun untuk mereka.",
     // ... [paste all 105 cards here] ...
-    "MINUM 3x jika kamu pernah meninggalkan rumah tanpa celana dalam.",
-    "RULES CARD: Kamu adalah 'Raja Pose'. Setiap kali kamu minum, kamu harus membuat pose seksi. Lupa? Minum 1x."
+    "**MINUM 3x** jika kamu pernah meninggalkan rumah tanpa celana dalam.",
+    "**RULES CARD:** Kamu adalah 'Raja Pose'. Setiap kali kamu minum, kamu harus membuat pose seksi. Lupa? **Minum 1x**."
 ];
 // -------------------------------------------------------------------
 
@@ -27,19 +27,22 @@ let players = [];
 let availableCards = [...cards]; 
 let currentPlayerIndex = -1; 
 
-// --- Player Management Logic (Simplified) ---
+// --- Player Management Logic (With Removal) ---
 
 function updatePlayerList() {
     playerListElement.innerHTML = '';
-    players.forEach((name) => {
+    players.forEach((name, index) => {
         const li = document.createElement('li');
-        // No remove button needed, just the name
-        li.textContent = name; 
+        // Structure: Player Name on the left, "X" button on the right
+        li.innerHTML = `
+            <span>${name}</span> 
+            <button class="remove-btn" data-index="${index}">X</button>
+        `;
         playerListElement.appendChild(li);
     });
 
-    playerCountElement.textContent = players.length;
-    startGameBtn.disabled = players.length < 2; // Need at least 2 players
+    playerCountElement.textContent = players.length; // Update the count number
+    startGameBtn.disabled = players.length < 2; 
     addPlayerBtn.disabled = nameInput.value.trim().length === 0;
 }
 
@@ -53,7 +56,16 @@ function handleAddPlayer() {
     }
 }
 
-// --- Game Flow Logic (START BUTTON FIX & TRANSITION) ---
+function handleRemovePlayer(e) {
+    if (e.target.classList.contains('remove-btn')) {
+        const index = parseInt(e.target.dataset.index);
+        // Remove the player at the specified index
+        players.splice(index, 1); 
+        updatePlayerList();
+    }
+}
+
+// --- Game Flow Logic (Unchanged) ---
 
 function switchScreen(activeId) {
     regScreen.classList.add('hidden');
@@ -74,7 +86,6 @@ function startGame() {
     container.classList.add('fade-out');
 
     setTimeout(() => {
-        // Player order is reversed: last-in is first to play.
         players.reverse(); 
         currentPlayerIndex = 0; 
         
@@ -89,11 +100,8 @@ function startGame() {
 
 function updateTurnTracker() {
     if (players.length > 0) {
-        // Cycle through players and display the current one
         const currentName = players[currentPlayerIndex % players.length];
         turnTrackerElement.textContent = currentName;
-        
-        // Prepare for the next turn
         currentPlayerIndex++;
     }
 }
@@ -151,6 +159,8 @@ function drawCard() {
 // --- Event Listeners ---
 nameInput.addEventListener('input', updatePlayerList); 
 addPlayerBtn.addEventListener('click', handleAddPlayer);
+// CRITICAL: Attach event listener to the UL element to handle X button clicks
+playerListElement.addEventListener('click', handleRemovePlayer); 
 startGameBtn.addEventListener('click', startGame);
 nextButton.addEventListener('click', drawCard);
 
