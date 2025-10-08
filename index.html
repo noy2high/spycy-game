@@ -5,20 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPYCY - Kartu Tantangan 21+</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>SPYCY</h1>
         <p class="tagline">Tantangan atau Tegukan. Pilih dengan bijak.</p>
-        
-        <div class="card" id="card-display">
-            <p class="prompt-text">
-                Klik 'MULAI' untuk Kartu Pertama!
-            </p>
+
+        <div id="registration-screen" class="screen active">
+            <h2>Siapa yang Berani Ikut?</h2>
+            <div class="input-area">
+                <input type="text" id="player-name-input" placeholder="Nama Pemain (misal: Risa)" maxlength="20">
+                <button id="add-player-button" disabled>TAMBAHKAN</button>
+            </div>
+            
+            <ul id="player-list"></ul>
+            
+            <div class="registration-info">
+                <p>Total Pemain: <span id="player-count">0</span></p>
+                <button id="start-game-button" disabled>MULAI BERMAIN</button>
+                <p class="small-info">* Pemain terakhir yang diinput akan menjadi yang pertama mengambil kartu.</p>
+            </div>
         </div>
-        
-        <button id="next-button">MULAI</button>
-        
+
+        <div id="gameplay-screen" class="screen hidden">
+            <div class="turn-tracker-area">
+                <p>GILIRAN:</p>
+                <h3 id="turn-tracker"></h3>
+            </div>
+            
+            <div class="card" id="card-display">
+                <p class="prompt-text">
+                    Klik 'KARTU BERIKUTNYA' untuk memulai.
+                </p>
+            </div>
+            
+            <button id="next-button">KARTU BERIKUTNYA</button>
+
+            <p class="counter" id="counter-display">Kartu Tersisa: 105 / 105</p>
+        </div>
+
         <p class="donate-text">
             Dukung game SPYCY! 🌶️
             <a href="https://paypal.me/YourPayPalMeLink" target="_blank" class="donate-link">DONASI DI SINI</a>
