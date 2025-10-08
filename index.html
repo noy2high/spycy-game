@@ -1,53 +1,58 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPYCY - Kartu Tantangan 21+</title>
+    <title>SPYCY - Cards 21+</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="background-overlay"></div> 
+    
     <div class="container">
-        <h1>SPYCY</h1>
-        <p class="tagline">Tantangan atau Tegukan. Pilih dengan bijak.</p>
+        <div class="header-branding">
+            <h1>SPYCY</h1>
+            <span class="age-tag">21+</span>
+        </div>
+        
+        <p class="tagline">Dare or Drink. Choose wisely.</p>
 
         <div id="registration-screen" class="screen active">
-            <h2>Siapa yang Berani Ikut?</h2>
+            <h2 class="wobble-text">Who Dares to Play?</h2>
+            
             <div class="input-area">
-                <input type="text" id="player-name-input" placeholder="Nama Pemain (misal: Risa)" maxlength="20">
-                <button id="add-player-button" disabled>TAMBAHKAN</button>
+                <input type="text" id="player-name-input" placeholder="Player Name (e.g., Risa)" maxlength="20">
+                <button id="add-player-button" disabled>ADD</button>
             </div>
             
-            <ul id="player-list"></ul>
+            <ul id="player-list" class="wobble-element"></ul>
             
             <div class="registration-info">
-                <p>Total Pemain: <span id="player-count">0</span></p>
-                <button id="start-game-button" disabled>MULAI BERMAIN</button>
-                <p class="small-info">* Pemain terakhir yang diinput akan menjadi yang pertama mengambil kartu.</p>
+                <button id="start-game-button" disabled>START GAME</button>
             </div>
         </div>
 
         <div id="gameplay-screen" class="screen hidden">
-            <div class="turn-tracker-area">
-                <p>GILIRAN:</p>
+            <div class="turn-tracker-area wobble-element">
+                <p>TURN:</p>
                 <h3 id="turn-tracker"></h3>
             </div>
             
             <div class="card" id="card-display">
                 <p class="prompt-text">
-                    Klik 'KARTU BERIKUTNYA' untuk memulai.
+                    Click 'NEXT CARD' to begin.
                 </p>
             </div>
             
-            <button id="next-button">KARTU BERIKUTNYA</button>
+            <button id="next-button">NEXT CARD</button>
 
-            <p class="counter" id="counter-display">Kartu Tersisa: 105 / 105</p>
+            <p class="counter" id="counter-display">Cards Left: 105 / 105</p>
         </div>
 
         <p class="donate-text">
-            Dukung game SPYCY! 🌶️
-            <a href="https://paypal.me/YourPayPalMeLink" target="_blank" class="donate-link">DONASI DI SINI</a>
+            Support SPYCY! 🌶️
+            <a href="https://paypal.me/YourPayPalMeLink" target="_blank" class="donate-link">DONATE HERE</a>
         </p>
     </div>
 
