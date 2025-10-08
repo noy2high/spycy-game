@@ -41,7 +41,7 @@ function updatePlayerList() {
         playerListElement.appendChild(li);
     });
 
-    playerCountElement.textContent = players.length; // Update the count number
+    playerCountElement.textContent = players.length; 
     startGameBtn.disabled = players.length < 2; 
     addPlayerBtn.disabled = nameInput.value.trim().length === 0;
 }
@@ -176,3 +176,4 @@ nameInput.addEventListener('keydown', function(event) {
         handleAddPlayer();
     }
 });
+
