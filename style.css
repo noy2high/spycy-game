@@ -134,12 +134,16 @@ h2 {
     margin-bottom: 20px;
 }
 
+/* NEW: Player List Item Styling for Tabs/Removal */
 #player-list li {
     padding: 10px 15px;
     text-align: left;
     border-bottom: 1px dashed #333;
     font-size: 0.95em;
     animation: fadeIn 0.3s ease-out;
+    display: flex; /* Enable flex for name and button alignment */
+    justify-content: space-between; /* Push name to left, button to right */
+    align-items: center;
 }
 
 #player-list li:last-child {
@@ -148,11 +152,26 @@ h2 {
     font-weight: 700;
 }
 
+.remove-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-grey);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.1em;
+    transition: color 0.2s;
+    padding: 5px;
+    line-height: 1; /* Fix vertical alignment */
+}
+
+.remove-btn:hover {
+    color: var(--primary-red);
+}
+
 .registration-info {
     margin-top: 20px;
 }
 
-/* New Player Count Styling */
 .player-count-display {
     color: var(--primary-red);
     font-size: 1.1em;
@@ -247,7 +266,7 @@ button:hover:not(:disabled) {
 .feedback-text {
     margin-top: 50px;
     font-size: 0.9em;
-    color: #aaaaaa; /* Light gray text */
+    color: #aaaaaa;
 }
 
 .message-link {
