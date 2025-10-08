@@ -1,11 +1,11 @@
 // --- Card List for SPYCY (105 Cards) ---
 const cards = [
     // IMPORTANT: Paste your entire 105-card list here.
-    "Lakukan dab setiap kali giliranmu, sampai kartu dare lain muncul. Jika lupa, **minum 2x**.",
+    "Lakukan dab setiap kali giliranmu, sampai kartu dare lain muncul. Jika lupa, minum 2x.",
     "Telepon teman secara acak dan nyanyikan lagu ulang tahun untuk mereka.",
     // ... [paste all 105 cards here] ...
-    "**MINUM 3x** jika kamu pernah meninggalkan rumah tanpa celana dalam.",
-    "**RULES CARD:** Kamu adalah 'Raja Pose'. Setiap kali kamu minum, kamu harus membuat pose seksi. Lupa? **Minum 1x**."
+    "MINUM 3x jika kamu pernah meninggalkan rumah tanpa celana dalam.",
+    "RULES CARD: Kamu adalah 'Raja Pose'. Setiap kali kamu minum, kamu harus membuat pose seksi. Lupa? Minum 1x."
 ];
 // -------------------------------------------------------------------
 
@@ -16,6 +16,7 @@ const nameInput = document.getElementById('player-name-input');
 const addPlayerBtn = document.getElementById('add-player-button');
 const startGameBtn = document.getElementById('start-game-button');
 const playerListElement = document.getElementById('player-list');
+const playerCountElement = document.getElementById('player-count');
 const turnTrackerElement = document.getElementById('turn-tracker');
 const cardDisplay = document.getElementById('card-display');
 const nextButton = document.getElementById('next-button');
@@ -26,18 +27,19 @@ let players = [];
 let availableCards = [...cards]; 
 let currentPlayerIndex = -1; 
 
-// --- Player Management Logic ---
+// --- Player Management Logic (Simplified) ---
 
 function updatePlayerList() {
     playerListElement.innerHTML = '';
-    players.forEach((name, index) => {
+    players.forEach((name) => {
         const li = document.createElement('li');
-        li.innerHTML = `${name} <button class="remove-btn" data-index="${index}">REMOVE</button>`;
+        // No remove button needed, just the name
+        li.textContent = name; 
         playerListElement.appendChild(li);
     });
 
-    // Removed Total Pemain: text
-    startGameBtn.disabled = players.length < 2; 
+    playerCountElement.textContent = players.length;
+    startGameBtn.disabled = players.length < 2; // Need at least 2 players
     addPlayerBtn.disabled = nameInput.value.trim().length === 0;
 }
 
@@ -45,28 +47,18 @@ function handleAddPlayer() {
     const name = nameInput.value.trim();
     if (name) {
         players.push(name);
-        nameInput.value = ''; 
+        nameInput.value = ''; // Clear input
         updatePlayerList();
         nameInput.focus(); // Keep input focused for faster entry
-    }
-}
-
-function handleRemovePlayer(e) {
-    if (e.target.classList.contains('remove-btn')) {
-        const index = parseInt(e.target.dataset.index);
-        players.splice(index, 1);
-        updatePlayerList();
     }
 }
 
 // --- Game Flow Logic (START BUTTON FIX & TRANSITION) ---
 
 function switchScreen(activeId) {
-    // Hide both screens instantly for setup
     regScreen.classList.add('hidden');
     gameScreen.classList.add('hidden');
     
-    // Show the desired screen
     if (activeId === 'registration') {
         regScreen.classList.remove('hidden');
         regScreen.classList.add('active');
@@ -79,11 +71,10 @@ function switchScreen(activeId) {
 function startGame() {
     if (players.length < 2) return; 
 
-    // Add fade-out effect to container for smooth transition
     container.classList.add('fade-out');
 
     setTimeout(() => {
-        // Player order is reversed: last-in (top of list) is first to play.
+        // Player order is reversed: last-in is first to play.
         players.reverse(); 
         currentPlayerIndex = 0; 
         
@@ -91,10 +82,9 @@ function startGame() {
         updateCounter();
         updateTurnTracker();
         
-        // Hide container fade-out effect and switch to gameplay
         container.classList.remove('fade-out');
         switchScreen('gameplay');
-    }, 500); // Wait for CSS transition to complete (0.5s)
+    }, 500); 
 }
 
 function updateTurnTracker() {
@@ -108,8 +98,7 @@ function updateTurnTracker() {
     }
 }
 
-// --- Card Drawing Logic ---
-// (Logic remains mostly the same, ensuring player turn updates on card draw)
+// --- Card Drawing Logic (Unchanged) ---
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -144,35 +133,31 @@ function drawCard() {
     const drawnCard = availableCards.splice(randomIndex, 1)[0]; 
     const category = getCardCategory(drawnCard);
     
-    // Apply visual flip animation
     cardDisplay.style.transform = 'rotateY(90deg)';
     
     setTimeout(() => {
-        // Update content during the flip
         cardDisplay.innerHTML = `
             <div class="card-tag">${category}</div>
             <p class="prompt-text">${drawnCard}</p>
         `;
-        // Flip back
         cardDisplay.style.transform = 'rotateY(0deg)';
-    }, 250); // Half of the 0.5s CSS transition time
+    }, 250); 
     
     updateCounter();
-    updateTurnTracker(); // Move to the next player after drawing a card
+    updateTurnTracker(); 
 }
 
 
 // --- Event Listeners ---
 nameInput.addEventListener('input', updatePlayerList); 
 addPlayerBtn.addEventListener('click', handleAddPlayer);
-playerListElement.addEventListener('click', handleRemovePlayer);
 startGameBtn.addEventListener('click', startGame);
 nextButton.addEventListener('click', drawCard);
 
 
 // Initialize on load
 updatePlayerList();
-switchScreen('registration'); // Ensure registration screen is visible on load
+switchScreen('registration'); 
 
 // Allows 'Enter' key to add a player
 nameInput.addEventListener('keydown', function(event) {
