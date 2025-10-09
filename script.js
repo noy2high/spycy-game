@@ -27,21 +27,18 @@ let players = [];
 let availableCards = [...cards]; 
 let currentPlayerIndex = -1; 
 
-// --- Player Management Logic (With Removal) ---
+// --- Player Management Logic (Simplified) ---
 
 function updatePlayerList() {
     playerListElement.innerHTML = '';
-    players.forEach((name, index) => {
+    players.forEach((name) => {
         const li = document.createElement('li');
-        // Structure: Player Name on the left, "X" button on the right
-        li.innerHTML = `
-            <span>${name}</span> 
-            <button class="remove-btn" data-index="${index}">X</button>
-        `;
+        // Structure: Only the player's name is displayed
+        li.textContent = name; 
         playerListElement.appendChild(li);
     });
 
-    playerCountElement.textContent = players.length; 
+    playerCountElement.textContent = players.length; // Update the count number
     startGameBtn.disabled = players.length < 2; 
     addPlayerBtn.disabled = nameInput.value.trim().length === 0;
 }
@@ -56,14 +53,7 @@ function handleAddPlayer() {
     }
 }
 
-function handleRemovePlayer(e) {
-    if (e.target.classList.contains('remove-btn')) {
-        const index = parseInt(e.target.dataset.index);
-        // Remove the player at the specified index
-        players.splice(index, 1); 
-        updatePlayerList();
-    }
-}
+// *** REMOVED handleRemovePlayer function ***
 
 // --- Game Flow Logic (Unchanged) ---
 
@@ -159,8 +149,7 @@ function drawCard() {
 // --- Event Listeners ---
 nameInput.addEventListener('input', updatePlayerList); 
 addPlayerBtn.addEventListener('click', handleAddPlayer);
-// CRITICAL: Attach event listener to the UL element to handle X button clicks
-playerListElement.addEventListener('click', handleRemovePlayer); 
+// *** REMOVED playerListElement.addEventListener('click', handleRemovePlayer); ***
 startGameBtn.addEventListener('click', startGame);
 nextButton.addEventListener('click', drawCard);
 
@@ -176,4 +165,3 @@ nameInput.addEventListener('keydown', function(event) {
         handleAddPlayer();
     }
 });
-
