@@ -9,7 +9,7 @@ const cards = [
 ];
 // -------------------------------------------------------------------
 
-// --- DOM Elements & Global State ---
+// --- DOM Elements & Global State (Unchanged) ---
 const regScreen = document.getElementById('registration-screen');
 const gameScreen = document.getElementById('gameplay-screen');
 const nameInput = document.getElementById('player-name-input');
@@ -22,23 +22,23 @@ const cardDisplay = document.getElementById('card-display');
 const nextButton = document.getElementById('next-button');
 const counterElement = document.getElementById('counter-display');
 const container = document.querySelector('.container');
+const turnTrackerArea = document.querySelector('.turn-tracker-area'); // NEW: Get the area for flashing
 
 let players = [];
 let availableCards = [...cards]; 
 let currentPlayerIndex = -1; 
 
-// --- Player Management Logic (Simplified) ---
+// --- Player Management Logic (Unchanged) ---
 
 function updatePlayerList() {
     playerListElement.innerHTML = '';
     players.forEach((name) => {
         const li = document.createElement('li');
-        // Structure: Only the player's name is displayed
         li.textContent = name; 
         playerListElement.appendChild(li);
     });
 
-    playerCountElement.textContent = players.length; // Update the count number
+    playerCountElement.textContent = players.length;
     startGameBtn.disabled = players.length < 2; 
     addPlayerBtn.disabled = nameInput.value.trim().length === 0;
 }
@@ -47,15 +47,13 @@ function handleAddPlayer() {
     const name = nameInput.value.trim();
     if (name) {
         players.push(name);
-        nameInput.value = ''; // Clear input
+        nameInput.value = ''; 
         updatePlayerList();
-        nameInput.focus(); // Keep input focused for faster entry
+        nameInput.focus();
     }
 }
 
-// *** REMOVED handleRemovePlayer function ***
-
-// --- Game Flow Logic (Unchanged) ---
+// --- Game Flow Logic (Modified for Dynamic Indicator) ---
 
 function switchScreen(activeId) {
     regScreen.classList.add('hidden');
@@ -81,22 +79,36 @@ function startGame() {
         
         shuffle(availableCards);
         updateCounter();
-        updateTurnTracker();
+        updateTurnTracker(true); // Call updateTurnTracker with a flash trigger
         
         container.classList.remove('fade-out');
         switchScreen('gameplay');
     }, 500); 
 }
 
-function updateTurnTracker() {
+// NEW: Function modified to include a flash trigger
+function updateTurnTracker(shouldFlash = false) {
     if (players.length > 0) {
+        // Cycle through players and display the current one
         const currentName = players[currentPlayerIndex % players.length];
         turnTrackerElement.textContent = currentName;
+        
+        // Dynamic Player Indicator (Flash)
+        if (shouldFlash) {
+            turnTrackerArea.classList.remove('flash');
+            void turnTrackerArea.offsetWidth; // Trigger reflow
+            turnTrackerArea.classList.add('flash');
+            setTimeout(() => {
+                turnTrackerArea.classList.remove('flash');
+            }, 300);
+        }
+
+        // Prepare for the next turn
         currentPlayerIndex++;
     }
 }
 
-// --- Card Drawing Logic (Unchanged) ---
+// --- Card Drawing Logic (Modified for Themed Colors) ---
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -110,12 +122,12 @@ function updateCounter() {
 }
 
 function getCardCategory(prompt) {
-    if (prompt.includes('RULES CARD') || prompt.includes('KATEGORI') || prompt.includes('RHETORIC')) {
-        return 'RULES SPYCY';
-    } else if (prompt.includes('Spill') || prompt.includes('Truth') || prompt.includes('Jawab Jujur')) {
-        return 'TRUTH SPYCY';
+    if (prompt.includes('RULES CARD') || prompt.includes('KATEGORI') || prompt.includes('RHETORIC') || prompt.includes('WATERFALL')) {
+        return { name: 'RULES SPYCY', className: 'rules-card' };
+    } else if (prompt.includes('Spill') || prompt.includes('Truth') || prompt.includes('Jawab Jujur') || prompt.includes('rahasia')) {
+        return { name: 'TRUTH SPYCY', className: 'truth-card' };
     } else {
-        return 'DARE SPYCY';
+        return { name: 'DARE SPYCY', className: 'dare-card' };
     }
 }
 
@@ -124,6 +136,8 @@ function drawCard() {
         availableCards = [...cards];
         shuffle(availableCards);
         cardDisplay.innerHTML = `<div class="card-tag">RESHUFFLE</div><p class="prompt-text">DECK EMPTY! Cards shuffled. Click 'NEXT CARD' for a new round!</p>`;
+        // Ensure subsequent draw calls flash the new player's name
+        updateTurnTracker(true); 
         return;
     }
 
@@ -131,25 +145,28 @@ function drawCard() {
     const drawnCard = availableCards.splice(randomIndex, 1)[0]; 
     const category = getCardCategory(drawnCard);
     
+    // Clear previous card classes and set the new category class
+    cardDisplay.className = 'card'; // Reset to base class
+    cardDisplay.classList.add(category.className);
+    
     cardDisplay.style.transform = 'rotateY(90deg)';
     
     setTimeout(() => {
         cardDisplay.innerHTML = `
-            <div class="card-tag">${category}</div>
+            <div class="card-tag">${category.name}</div>
             <p class="prompt-text">${drawnCard}</p>
         `;
         cardDisplay.style.transform = 'rotateY(0deg)';
     }, 250); 
     
     updateCounter();
-    updateTurnTracker(); 
+    updateTurnTracker(true); // Flash the new active player
 }
 
 
 // --- Event Listeners ---
 nameInput.addEventListener('input', updatePlayerList); 
 addPlayerBtn.addEventListener('click', handleAddPlayer);
-// *** REMOVED playerListElement.addEventListener('click', handleRemovePlayer); ***
 startGameBtn.addEventListener('click', startGame);
 nextButton.addEventListener('click', drawCard);
 
