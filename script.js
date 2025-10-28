@@ -32,15 +32,15 @@ const cards = [
     "Selama 1 putaran, setiap kali ada yang menyebut namamu, kamu harus mengeong. Lupa? TENGGAK 1x",
     "Pilih pemain di sebelah kananmu. Kalian berdua harus bertukar tempat tanpa menggunakan kaki. (misal: merangkak atau berguling).",
     "Kumpulkan 5 benda berwarna merah di sekitarmu dalam 10 detik. Jika gagal, TENGGAK 2x.",
-    "Minum 5x. Lalu, berikan pelukan awkward selama 15 detik kepada objek mati di ruangan itu (misal: lemari atau kursi).",
+    "Minum 5x. Lalu, berikan pelukan awkward selama 15 detik kepada lawan jenis di ruangan itu.",
     "Pemain di sebelah kirimu bebas memberi perintah (tugas kecil) padamu 1x dalam putaran ini.",
-    "Pilih lagu di YouTube. Semuanya harus menyanyikan bait pertamanya. Yang paling diam TENGGAK 1x.",
-    "Tunjuk ke luar jendela (atau dinding) dan jelaskan apa yang baru saja kamu lihat.",
+    "Pilih lagu di Spotify. Semuanya harus menyanyikan bait pertamanya. Yang paling diam TENGGAK 1x.",
+    "Lakukan handstand selama 10 detik. Jika gagal, TENGGAK 3x.",
     "Spill it. Ceritakan tiga orang di grup ini yang pernah kamu bayangkan tanpa pakaian.",
-    "Truth. Apa *chat* terakhir kamu ke mantan (atau gebetan)? Spill atau TENGGAK 4x.",
-    "TENGGAK 3x jika kamu pernah melakukan *one-night stand*.",
+    "Truth. Apa chat terakhir kamu ke mantan? Spill atau TENGGAK 4x.",
+    "TENGGAK 3x jika kamu pernah melakukan one-night stand.",
     "TENGGAK 4x jika kamu pernah mabuk sampai hilang ingatan dan melakukan sesuatu yang memalukan.",
-    "Ceritakan *crush* teraneh yang pernah kamu miliki.",
+    "Sebutkan dan jelaskan bagaimana first kiss-mu bisa terjadi. Malu? TENGGAK 2x.",
     "Apa hal yang kamu cari di Google secara rahasia yang paling memalukan baru-baru ini?",
     "Jawab atau TENGGAK. Siapa di grup ini yang paling mungkin menjadi bos *mafia*?",
     "TENGGAK 2x jika kamu pernah *ghosting* seseorang setelah kencan yang sangat panas.",
@@ -279,4 +279,5 @@ nameInput.addEventListener('keydown', function(event) {
         handleAddPlayer();
     }
 });
+
 
